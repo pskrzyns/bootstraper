@@ -1,0 +1,59 @@
+---
+#- name: Bootstrap PC
+#  hosts: targets
+#  become: yes
+#
+#  tasks:
+#  - name: Ensure that openssh server is installed
+#    ansible.builtin.apt:
+#      name: openssh-server
+#      state: latest
+#  - name: Ensure that openssh server is enabled and running
+#    ansible.builtin.systemd:
+#      name: ssh
+#      state: started
+#      enabled: yes
+#
+#  - name: Install all goodies
+#    ansible.builtin.apt:
+#      name: "{{ item }}"
+#      state: latest
+#    with_items:
+#      - git
+#      - git-doc
+#      - ansible
+#      - vim
+#      - vim-doc
+#      - tmux
+#      - tmux-plugin-manager
+#      - tmuxinator
+#      - htop
+#      - iotop
+#      - iftop
+#      - mc
+#      - moc
+#      - zsh
+#      - zsh-doc
+#      - fonts-powerline
+#      - wireshark
+#      - wireshark-doc
+#      - build-essential
+#      - calcurse
+#      - curl
+#      - irssi
+
+- name: Configure soft
+  hosts: targets
+  become: no
+
+  tasks:
+  - name: Fetch OhMyZSH installer
+    ansible.builtin.uri:
+      url: https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+      return_content: yes
+    register: oh_my_zsh_installer
+  - ansible.builtin.debug:
+      msg:
+      - "{{ oh_my_zsh_installer.content }}"
+
+
